@@ -1,3 +1,38 @@
+// import express from "express";
+// import mongoose from "mongoose";
+// import cors from "cors";
+// import dotenv from "dotenv";
+// import authRoutes from "./routes/authRoutes.js";
+// import bookRoutes from "./routes/bookRoutes.js";
+
+// dotenv.config();
+
+// const app = express();
+// app.use(cors());
+// app.use(express.json());
+
+// app.use("/api/v1/auth", authRoutes);
+// app.use("/api/v1/books", bookRoutes);
+
+// let isConnected = false;
+
+// async function connectDB() {
+//   if (isConnected) return;
+//   await mongoose.connect(process.env.MONGODB_URI, {
+//     useNewUrlParser: true,
+    
+//   });
+//   isConnected = true;
+// }
+
+// app.use(async (req, res, next) => {
+//   await connectDB();
+//   next();
+// });
+
+// export default app;
+
+// Backend/index.js
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -11,23 +46,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/books", bookRoutes);
-
 let isConnected = false;
 
-async function connectDB() {
+export const connectDB = async () => {
   if (isConnected) return;
   await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
-    
+    useUnifiedTopology: true,
   });
   isConnected = true;
-}
+};
 
-app.use(async (req, res, next) => {
-  await connectDB();
-  next();
-});
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/books", bookRoutes);
 
 export default app;
