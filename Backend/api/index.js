@@ -1,7 +1,16 @@
-import app from '../index.js';
-import { createServer } from 'http';
+import { createServer } from "http";
+import { app, connectDB } from "..";
 
-export default function handler(req, res) {
+const PORT = process.env.PORT || 5000;
+
+const startServer = async () => {
+  await connectDB();
+
   const server = createServer(app);
-  server.emit('request', req, res);
-}
+
+  server.listen(PORT, () => {
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  });
+};
+
+startServer();

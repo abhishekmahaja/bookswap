@@ -14,20 +14,17 @@ app.use(express.json());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/books", bookRoutes);
 
-let isConnected = false;
-
-async function connectDB() {
-  if (isConnected) return;
-  await mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    serverSelectionTimeoutMS: 100000, 
-  });
-  isConnected = true;
-}
-
-app.use(async (req, res, next) => {
-  await connectDB();
-  next();
-});
-
-export default app;
+export { app };
+export const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000, 
+    });
+    console.log("MongoDB Connected");
+  } catch (err) {
+    console.error("MongoDB connection error:", err.message);
+    process.exit(1); 
+  }
+};
