@@ -42,7 +42,13 @@ import { connectDB } from "./dbConnection/db.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+  origin: ["https://bookswap-ten.vercel.app", "http://localhost:6300"], 
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api/v1/auth", authRoutes);
