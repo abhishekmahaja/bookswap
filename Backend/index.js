@@ -20,6 +20,7 @@ async function connectDB() {
   if (isConnected) return;
   await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
+    serverSelectionTimeoutMS: 100000, 
   });
   isConnected = true;
 }
