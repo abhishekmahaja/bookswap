@@ -7,8 +7,6 @@ import bookRoutes from "./routes/bookRoutes.js";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 6300;
-
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -16,18 +14,20 @@ app.use(express.json());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/books", bookRoutes);
 
-mongoose
-  .connect(process.env.MONGODB_URI, {
+let isConnected = false;
+
+async function connectDB() {
+  if (isConnected) return;
+  await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
-    // useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected to MongoDB");
-    app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    
   });
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-    process.exit(1);
-  });
+  isConnected = true;
+}
+
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
+
+export default app;
