@@ -12,80 +12,116 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     const { email, password } = formData;
+
     if (!email || !password) {
       return alert("Please fill all the fields!");
     }
 
     setLoading(true);
-    const response = await login(formData);
-    setLoading(false);
-
-    if (!response.success) {
-      return alert(response.message || "Login failed!");
+    try {
+      const response = await login(formData);
+      if (!response.success) {
+        alert(response.message || "Login failed!");
+      } else {
+        sessionStorage.setItem("token", response.token);
+        alert("Logged in successfully!");
+        // navigate("/dashboard");
+      }
+    } catch (error) {
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    // Store token
-    if (response.token) {
-      sessionStorage.setItem("token", response.token);
-    }
-
-    alert("Logged in successfully!");
-    // navigate("/dashboard");
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-black">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
-        <form onSubmit={handleLogin} className="flex flex-col gap-4">
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">
+          Welcome Back
+        </h2>
+        <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium">
-              Email
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700"
+            >
+              Email Address
             </label>
             <input
               type="email"
-              id="email"
               name="email"
+              id="email"
               required
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="example@gmail.com"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="you@example.com"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <input
               type="password"
-              id="password"
               name="password"
+              id="password"
               required
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="********"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
+            className="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center justify-center gap-2"
           >
+            {loading && (
+              <svg
+                className="w-5 h-5 animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                ></path>
+              </svg>
+            )}
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+        <p className="mt-6 text-center text-sm text-gray-500">
+          Don’t have an account?{" "}
+          <a href="/signup" className="text-blue-600 hover:underline">
+            Sign up
+          </a>
+        </p>
       </div>
     </div>
   );

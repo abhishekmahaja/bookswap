@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+// import { signup } from "../api/auth";
 // import { useNavigate } from "react-router-dom";
-// import { signup } from "../api/auth"; 
 
 const Signup = () => {
   // const navigate = useNavigate();
@@ -13,9 +13,10 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   };
 
@@ -28,25 +29,31 @@ const Signup = () => {
     }
 
     setLoading(true);
-    // const response = await signup(formData);
-    // if (!response.success) {
-    //   setLoading(false);
-    //   return toast.error(response.message);
-    // }
-
-    setLoading(false);
-    alert("Signed up successfully!");
-    // toast.success("Signup successful!");
-    // navigate("/dashboard");
+    try {
+      // const response = await signup(formData);
+      // if (!response.success) {
+      //   return alert(response.message || "Signup failed!");
+      // }
+      alert("Signed up successfully!");
+      // navigate("/dashboard");
+    } catch (error) {
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Create Account</h2>
-        <form onSubmit={handleSignup} className="flex flex-col gap-4">
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">
+          Create Your Account
+        </h2>
+        <form onSubmit={handleSignup} className="space-y-5">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium">Name</label>
+            <label htmlFor="name" className="text-sm font-medium text-gray-700">
+              Full Name
+            </label>
             <input
               type="text"
               id="name"
@@ -54,12 +61,17 @@ const Signup = () => {
               required
               value={formData.name}
               onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="John Doe"
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium">Email</label>
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700"
+            >
+              Email Address
+            </label>
             <input
               type="email"
               id="email"
@@ -67,12 +79,17 @@ const Signup = () => {
               required
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="example@gmail.com"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="you@example.com"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium">Password</label>
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -80,18 +97,45 @@ const Signup = () => {
               required
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="********"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
+            className="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center justify-center gap-2"
           >
+            {loading && (
+              <svg
+                className="w-5 h-5 animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                ></path>
+              </svg>
+            )}
             {loading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
+        <p className="mt-6 text-center text-sm text-gray-500">
+          Already have an account?{" "}
+          <a href="/" className="text-blue-600 hover:underline">
+            Login
+          </a>
+        </p>
       </div>
     </div>
   );
