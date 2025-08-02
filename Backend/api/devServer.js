@@ -14,18 +14,17 @@ app.use(express.json());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/books", bookRoutes);
 
-// Connect to database (only once for serverless functions)
-let isConnected = false;
-async function initDB() {
-  if (!isConnected) {
+const startServer = async () => {
+  try {
     await connectToDatabase();
-    isConnected = true;
+
+    const PORT = process.env.PORT || 6300;
+    app.listen(PORT, () => {
+      console.log(`Local server running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start local server:", error.message);
   }
-}
+};
 
-// Export handler for Vercel
-export default async function handler(req, res) {
-  await initDB();
-  return app(req, res); // let Express handle the request
-}
-
+startServer();
