@@ -33,12 +33,15 @@ const Dashboard = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const fileInputRef = useRef(null);
 
+  const URL_LIVE= "https://bookswap-ten.vercel.app/api/v1/books"
+  const URL_LOCAL= "https://bookswap-ten.vercel.app/api/v1/books"
+
   const fetchBooks = async () => {
     try {
       setLoading(true);
       const token = sessionStorage.getItem("token");
       const response = await axios.get(
-        "https://bookswap-ten.vercel.app/api/v1/books/getBook",
+        `${URL_LOCAL}/getBook`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,7 +74,7 @@ const Dashboard = () => {
       }
 
       await axios.post(
-        "https://bookswap-ten.vercel.app/api/v1/books/addBook",
+        `${URL_LOCAL}/addBook`,
         formData,
         {
           headers: {
@@ -100,7 +103,7 @@ const Dashboard = () => {
   const handleRequestBook = async () => {
     try {
       await axios.post(
-        `https://bookswap-ten.vercel.app/api/v1/books/requestBook/${selectedBook?._id}`
+        `${URL_LOCAL}/requestBook/${selectedBook?._id}`
       );
       showToast("Book request sent successfully!", "success");
       setOpenRequestDialog(false);

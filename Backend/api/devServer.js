@@ -1,4 +1,3 @@
-// api/devServer.js
 import dotenv from "dotenv";
 dotenv.config();
 

@@ -1,4 +1,3 @@
-// db/db.js
 import mongoose from "mongoose";
 
 let isConnected = false;
@@ -13,9 +12,9 @@ const connectToDatabase = async () => {
   try {
     const db = await mongoose.connect(process.env.MONGODB_URL);
     isConnected = db.connections[0].readyState === 1;
-    console.log("✅ MongoDB connected.");
+    console.log(" MongoDB connected.");
   } catch (error) {
-    console.error("❌ MongoDB connection error:", error.message);
+    console.error("MongoDB connection error:", error.message);
     throw error;
   }
 };
