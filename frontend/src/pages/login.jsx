@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { login } from "../apis/server";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
