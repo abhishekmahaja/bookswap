@@ -28,3 +28,11 @@ export const addBook = async (formData) => {
     return catchError(error);
   }
 };
+export const getBook = async () => {
+  try {
+    const response = await axios.get(`${BOOK_URL}/getBook`);
+    return response.data;
+  } catch (error) {
+    return catchError(error);
+  }
+};

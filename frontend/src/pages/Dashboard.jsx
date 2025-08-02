@@ -8,6 +8,7 @@ import {
   FiInfo,
   FiUpload,
 } from "react-icons/fi";
+import { getBook } from "../apis/server";
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
@@ -35,10 +36,8 @@ const Dashboard = () => {
   const fetchBooks = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "https://bookswap-ten.vercel.app/api/v1/books/getBook"
-      );
-      setBooks(response.data.data || []);
+      const response = await getBook();
+      setBooks(response?.data || []);
       setLoading(false);
     } catch (err) {
       setError("Failed to fetch books");
