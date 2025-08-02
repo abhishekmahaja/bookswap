@@ -150,7 +150,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen max-w-7xl mx-auto bg-gray-50 p-4 md:p-8 w-full">
+    <div className="min-h-screen max-w-7xl mx-auto bg-gray-50 p-4 md:p-8 w-full ">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Book Dashboard</h1>
