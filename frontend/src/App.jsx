@@ -5,6 +5,7 @@ import Login from "./pages/login.jsx";
 import "./index.css";
 import Loading from "./component/loading.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import ProtectedRoute from "./component/ProtectedRoute.jsx";
 
 const App = () => {
   return (
@@ -14,7 +15,10 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/" element={<Login />} />
           <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
         </Routes>
       </Suspense>
     </div>

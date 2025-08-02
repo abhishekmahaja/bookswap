@@ -36,8 +36,16 @@ const Dashboard = () => {
   const fetchBooks = async () => {
     try {
       setLoading(true);
-      const response = await getBook();
-      setBooks(response?.data || []);
+      const token = sessionStorage.getItem("token");
+      const response = await axios.get(
+        "https://bookswap-ten.vercel.app/api/v1/books/getBook",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setBooks(response?.data?.data || []);
       setLoading(false);
     } catch (err) {
       setError("Failed to fetch books");
@@ -45,7 +53,6 @@ const Dashboard = () => {
       console.error(err);
     }
   };
-
   useEffect(() => {
     fetchBooks();
   }, []);

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { login } from "../apis/server";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -32,11 +32,11 @@ const Login = () => {
       const response = await login(formData);
       if (!response.success) {
         alert(response.message || "Login failed!");
+        return;
       } else {
         sessionStorage.setItem("token", response.token);
-        alert("Logged in successfully!");
+        navigate("/dashboard");
       }
-      navigate("/dashboard");
     } catch (error) {
       alert("Something went wrong. Please try again.");
     } finally {
