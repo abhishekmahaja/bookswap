@@ -1,11 +1,13 @@
+// api/devServer.js
 import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
 import cors from "cors";
+
+import connectToDatabase from "../db/db.js";
 import authRoutes from "../routes/authRoutes.js";
 import bookRoutes from "../routes/bookRoutes.js";
-import connectToDatabase from "../db/db.js";
 
 const app = express();
 app.use(cors());
