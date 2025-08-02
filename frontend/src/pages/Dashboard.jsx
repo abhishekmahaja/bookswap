@@ -34,7 +34,7 @@ const Dashboard = () => {
   const fileInputRef = useRef(null);
 
   const URL_LIVE= "https://bookswap-ten.vercel.app/api/v1/books"
-  const URL_LOCAL= "https://bookswap-ten.vercel.app/api/v1/books"
+  const URL_LOCAL= "http://localhost:6300/api/v1/books"
 
   const fetchBooks = async () => {
     try {
