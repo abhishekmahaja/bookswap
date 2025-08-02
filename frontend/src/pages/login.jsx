@@ -35,8 +35,8 @@ const Login = () => {
       } else {
         sessionStorage.setItem("token", response.token);
         alert("Logged in successfully!");
-        // navigate("/dashboard");
       }
+      navigate("/dashboard");
     } catch (error) {
       alert("Something went wrong. Please try again.");
     } finally {
@@ -65,7 +65,7 @@ const Login = () => {
               required
               value={formData.email}
               onChange={handleChange}
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               placeholder="you@example.com"
             />
           </div>
@@ -83,7 +83,7 @@ const Login = () => {
               required
               value={formData.password}
               onChange={handleChange}
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               placeholder="********"
             />
           </div>
