@@ -3,6 +3,8 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
+import serverless from "serverless-http";
+
 import authRoutes from "../routes/authRoutes.js";
 import bookRoutes from "../routes/bookRoutes.js";
 import connectToDatabase from "../db/db.js";
@@ -14,18 +16,18 @@ app.use(express.json());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/books", bookRoutes);
 
-// Connect to database (only once for serverless functions)
-let isConnected = false;
-async function initDB() {
-  if (!isConnected) {
+// Connect to MongoDB once
+let isDbConnected = false;
+const connect = async () => {
+  if (!isDbConnected) {
     await connectToDatabase();
-    isConnected = true;
+    isDbConnected = true;
   }
-}
+};
 
-// Export handler for Vercel
-export default async function handler(req, res) {
-  await initDB();
-  return app(req, res); // let Express handle the request
-}
+app.use(async (req, res, next) => {
+  await connect();
+  next();
+});
 
+export const handler = serverless(app);
