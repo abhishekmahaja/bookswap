@@ -57,18 +57,61 @@
 							}
 						},
 						"url": {
-							"raw": "https://bookswap-ten.vercel.app/api/v1/auth/login",
-							"protocol": "https",
+							"raw": "http://localhost:6300/api/v1/auth/login",
+							"protocol": "http",
 							"host": [
-								"bookswap-ten",
-								"vercel",
-								"app"
+								"localhost"
 							],
+							"port": "6300",
 							"path": [
 								"api",
 								"v1",
 								"auth",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-swaps-history",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGQwMDQ0ZTZmMGZlNmU2ZTgyMTdmNiIsImlhdCI6MTc1NDM4MzgwOSwiZXhwIjoxNzU0NDcwMjA5fQ.WRLiORFl-GO9f1-UccvywXeJNoR-RckAJOCyzf0pw1M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6300/api/v1/auth/get-swaps-history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6300",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"get-swaps-history"
 							]
 						}
 					},
@@ -87,7 +130,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGQwMDQ0ZTZmMGZlNmU2ZTgyMTdmNiIsImlhdCI6MTc1NDA3MTQwNCwiZXhwIjoxNzU0MTU3ODA0fQ.921JAABc-NrGsqOOo2aGb2lrjgqF7F-3BA96px17QsU",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGQwMDQ0ZTZmMGZlNmU2ZTgyMTdmNiIsImlhdCI6MTc1NDM4MzgwOSwiZXhwIjoxNzU0NDcwMjA5fQ.WRLiORFl-GO9f1-UccvywXeJNoR-RckAJOCyzf0pw1M",
 									"type": "string"
 								}
 							]
@@ -99,34 +142,33 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "book",
+									"value": "book2",
 									"type": "text"
 								},
 								{
 									"key": "author",
-									"value": "sim",
+									"value": "sim2",
 									"type": "text"
 								},
 								{
 									"key": "condition",
-									"value": "good",
+									"value": "good2",
 									"type": "text"
 								},
 								{
 									"key": "files",
 									"type": "file",
-									"src": "/D:/ABHI MAHAJAN/Systaldyn/MRSC/MRSC Images/biryani.png"
+									"src": "/D:/ABHI MAHAJAN/Systaldyn/MRSC/MRSC Images/Food Cart.png"
 								}
 							]
 						},
 						"url": {
-							"raw": "https://bookswap-ten.vercel.app/api/v1/books/addBook",
-							"protocol": "https",
+							"raw": "http://localhost:6300/api/v1/books/addBook",
+							"protocol": "http",
 							"host": [
-								"bookswap-ten",
-								"vercel",
-								"app"
+								"localhost"
 							],
+							"port": "6300",
 							"path": [
 								"api",
 								"v1",
@@ -318,6 +360,139 @@
 									"key": "status",
 									"value": "accepted"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "toggle-availability",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGQwMDQ0ZTZmMGZlNmU2ZTgyMTdmNiIsImlhdCI6MTc1NDM4MzgwOSwiZXhwIjoxNzU0NDcwMjA5fQ.WRLiORFl-GO9f1-UccvywXeJNoR-RckAJOCyzf0pw1M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6300/api/v1/books/toggle-availability/6891c5d924104f3db409e2ab",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6300",
+							"path": [
+								"api",
+								"v1",
+								"books",
+								"toggle-availability",
+								"6891c5d924104f3db409e2ab"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Review",
+			"item": [
+				{
+					"name": "submit-review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGQwMDQ0ZTZmMGZlNmU2ZTgyMTdmNiIsImlhdCI6MTc1NDM4MzgwOSwiZXhwIjoxNzU0NDcwMjA5fQ.WRLiORFl-GO9f1-UccvywXeJNoR-RckAJOCyzf0pw1M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"bookId\": \"6891c5d924104f3db409e2ab\",\r\n  \"rating\": 4,\r\n  \"comment\": \"Excellent book and fast swap!\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6300/api/v1/review/submit-review",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6300",
+							"path": [
+								"api",
+								"v1",
+								"review",
+								"submit-review"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-review",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OGQwMDQ0ZTZmMGZlNmU2ZTgyMTdmNiIsImlhdCI6MTc1NDM4MzgwOSwiZXhwIjoxNzU0NDcwMjA5fQ.WRLiORFl-GO9f1-UccvywXeJNoR-RckAJOCyzf0pw1M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:6300/api/v1/review/get-review/6891c5d924104f3db409e2ab",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "6300",
+							"path": [
+								"api",
+								"v1",
+								"review",
+								"get-review",
+								"6891c5d924104f3db409e2ab"
 							]
 						}
 					},
