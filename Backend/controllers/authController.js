@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import User from "../models/userModel.js";
+import book from "../models/bookModel.js";
 
 dotenv.config();
 
@@ -86,6 +87,30 @@ export const login = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message || "Internal Server Error",
+    });
+  }
+};
+
+export const getUserSwapHistory = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const booksSwapped = await book.find({
+      $or: [
+        { userId },
+        { "requests.userId": userId, "requests.status": "accepted" },
+      ],
+    }).populate("userId", "name email");
+
+    return res.status(200).json({
+      success: true,
+      message: "Swap history fetched",
+      data: booksSwapped,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
     });
   }
 };

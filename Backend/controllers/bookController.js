@@ -33,7 +33,7 @@ export const addBooks = async (req, res) => {
     }
 
     // image URLs
-    const imageUrls = req.files.map(file => file.path);
+    const imageUrls = req.files.map((file) => file.path);
 
     // Add the book
     const book = await Book.create({
@@ -178,6 +178,33 @@ export const updateRequestStatus = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message || "Internal Server Error",
+    });
+  }
+};
+
+export const toggleAvailability = async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).json({
+        success: false,
+        message: "Book not found",
+      });
+    }
+
+    book.isAvailable = !book.isAvailable;
+    await book.save();
+
+    return res.status(200).json({
+      success: true,
+      message: `Book availability set to ${book.isAvailable}`,
+      data: book,
+    });
+  } catch (error) {
+    console;
+    return res.status(500).json({
+      success: false,
+      message: error.message,
     });
   }
 };

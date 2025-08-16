@@ -5,6 +5,7 @@ import {
   getAllBooks,
   getMyBooks,
   requestBook,
+  toggleAvailability,
   updateRequestStatus,
 } from "../controllers/bookController.js";
 import upload from "../middleware/upload.js";
@@ -16,5 +17,7 @@ router.get("/getBook", verifyToken, getAllBooks);
 router.get("/requestBook/:id", verifyToken, requestBook);
 router.get("/getMyBooks", verifyToken, getMyBooks);
 router.patch("/:bookId/requests/:requestId", verifyToken, updateRequestStatus);
+router.patch("/toggle-availability/:id", verifyToken, toggleAvailability
+);
 
 export default router;

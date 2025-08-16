@@ -8,7 +8,7 @@ const bookSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-        unique: true,
+      unique: true,
     },
     author: {
       type: String,
@@ -18,6 +18,10 @@ const bookSchema = new mongoose.Schema(
     },
     image: {
       type: [String],
+    },
+    isAvailable: {
+      type: Boolean,
+      default: true,
     },
     requests: [
       {

@@ -8,7 +8,8 @@ import {
   FiInfo,
   FiUpload,
 } from "react-icons/fi";
-import { getBook } from "../apis/server";
+import { addBook, getBook } from "../apis/server";
+import ReviewSection from "../component/review";
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
@@ -18,6 +19,8 @@ const Dashboard = () => {
   const [openDetailModal, setOpenDetailModal] = useState(false);
   const [openRequestDialog, setOpenRequestDialog] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const token = sessionStorage.getItem("token");
   const [toast, setToast] = useState({
     show: false,
     message: "",
@@ -26,28 +29,25 @@ const Dashboard = () => {
   const [newBook, setNewBook] = useState({
     title: "",
     author: "",
-    description: "",
+    condition: "",
     image: "",
     imageFile: null,
   });
   const [previewImage, setPreviewImage] = useState(null);
   const fileInputRef = useRef(null);
 
-  const URL_LIVE= "https://bookswap-ten.vercel.app/api/v1/books"
-  const URL_LOCAL= "http://localhost:6300/api/v1/books"
+  const URL_LIVE = "https://bookswap-ten.vercel.app/api/v1/books";
+  const URL_LOCAL = "http://localhost:6300/api/v1/books";
 
   const fetchBooks = async () => {
     try {
       setLoading(true);
       const token = sessionStorage.getItem("token");
-      const response = await axios.get(
-        `${URL_LOCAL}/getBook`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${URL_LOCAL}/getBook`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setBooks(response?.data?.data || []);
       setLoading(false);
     } catch (err) {
@@ -65,35 +65,25 @@ const Dashboard = () => {
       const formData = new FormData();
       formData.append("title", newBook.title);
       formData.append("author", newBook.author);
-      formData.append("description", newBook.description);
-
+      formData.append("condition", newBook.condition);
       if (newBook.imageFile) {
-        formData.append("image", newBook.imageFile);
+        formData.append("files", newBook.imageFile);
       } else if (newBook.image) {
         formData.append("imageUrl", newBook.image);
       }
-
-      await axios.post(
-        `${URL_LOCAL}/addBook`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
+      const token = sessionStorage.getItem("token");
+      await addBook(formData, token);
       showToast("Book added successfully!", "success");
       setOpenAddModal(false);
       setNewBook({
         title: "",
         author: "",
-        description: "",
+        condition: "",
         image: "",
         imageFile: null,
       });
       setPreviewImage(null);
-      fetchBooks();
+      await fetchBooks();
     } catch (err) {
       showToast("Failed to add book", "error");
       console.error(err);
@@ -102,9 +92,7 @@ const Dashboard = () => {
 
   const handleRequestBook = async () => {
     try {
-      await axios.post(
-        `${URL_LOCAL}/requestBook/${selectedBook?._id}`
-      );
+      await axios.post(`${URL_LOCAL}/requestBook/${selectedBook?._id}`);
       showToast("Book request sent successfully!", "success");
       setOpenRequestDialog(false);
     } catch (err) {
@@ -157,6 +145,10 @@ const Dashboard = () => {
     setSelectedBook(book);
     setOpenDetailModal(true);
   };
+  const handleReviewClick = (book) => {
+    // setSelectedBook(book);
+    setShowModal(true);
+  };
 
   return (
     <div className="min-h-screen max-w-7xl mx-auto bg-gray-50 p-4 md:p-8 w-full ">
@@ -195,6 +187,7 @@ const Dashboard = () => {
               onClick={() => handleBookClick(book)}
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
             >
+              <button onClick={() => handleReviewClick(book)}>Review</button>
               <div className="h-48 overflow-hidden">
                 <img
                   src={book.image || "https://via.placeholder.com/300x200"}
@@ -203,12 +196,10 @@ const Dashboard = () => {
                 />
               </div>
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800 truncate">
+                <h3 className="text-lg font-semibold text-black truncate">
                   {book.title}
                 </h3>
-                <p className="text-gray-600 text-sm truncate">
-                  by {book.author}
-                </p>
+                <p className="text-black text-sm truncate">by {book.author}</p>
                 <div className="mt-3">
                   <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
                     Available
@@ -217,6 +208,24 @@ const Dashboard = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Book Review Modal */}
+      {showModal && selectedBook && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded w-full max-w-xl relative">
+            <button
+              className="absolute top-2 right-3 text-xl text-gray-600"
+              onClick={() => setShowModal(false)}
+            >
+              ✖
+            </button>
+            <h2 className="text-xl font-bold mb-2">{selectedBook.title}</h2>
+            <p className="text-gray-700 mb-4">{selectedBook.description}</p>
+            {/* Review Component */}
+            <ReviewSection bookId={selectedBook._id} />
+          </div>
         </div>
       )}
 
@@ -265,15 +274,15 @@ const Dashboard = () => {
                 </div>
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Description
+                    condition
                   </label>
                   <textarea
-                    name="description"
-                    value={newBook.description}
+                    name="condition"
+                    value={newBook.condition}
                     onChange={handleInputChange}
                     rows={4}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    placeholder="Book description"
+                    placeholder="Book condition"
                   ></textarea>
                 </div>
 
@@ -347,13 +356,13 @@ const Dashboard = () => {
                   disabled={
                     !newBook.title ||
                     !newBook.author ||
-                    !newBook.description ||
+                    !newBook.condition ||
                     (!newBook.image && !newBook.imageFile)
                   }
                   className={`px-4 py-2 rounded-md text-white ${
                     !newBook.title ||
                     !newBook.author ||
-                    !newBook.description ||
+                    !newBook.condition ||
                     (!newBook.image && !newBook.imageFile)
                       ? "bg-indigo-300 cursor-not-allowed"
                       : "bg-indigo-600 hover:bg-indigo-700"
@@ -403,7 +412,7 @@ const Dashboard = () => {
                   </div>
                   <div className="flex items-start text-gray-600 mb-4">
                     <FiInfo className="mr-2 mt-1" />
-                    <p className="text-gray-700">{selectedBook?.description}</p>
+                    <p className="text-gray-700">{selectedBook?.condition}</p>
                   </div>
                   <button
                     onClick={() => setOpenRequestDialog(true)}
